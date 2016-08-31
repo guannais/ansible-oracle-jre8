@@ -30,7 +30,7 @@
     src: "/tmp/{{ java_type }}-{{ java_version }}.tar.gz"
     dest: "/opt/"
     copy: "no"
-    mode: "0644"
+    mode: "0755"
     owner: "root"
     group: "root"
   when: not java_install_dir.stat.exists
