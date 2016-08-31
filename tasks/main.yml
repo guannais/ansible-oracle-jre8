@@ -1,0 +1,60 @@
+---
+# tasks file for oracle-jre8
+- name: Check - Java Type
+  fail: msg="ERROR - required variable 'java_type' missing."
+  when: java_type is not defined
+- name: Check - Java Version
+  fail: msg="ERROR - required variable 'java_version' missing."
+  when: java_version is not defined
+- name: Check - Java URL
+  fail: msg="ERROR - required variable 'java_url' missing."
+  when: java_url is not defined
+- name: Check - Java Minor
+  fail: msg="ERROR - required variable 'java_minor' missing."
+  when: java_minor is not defined
+- name: Check - Java Extract Dir
+  fail: msg="ERROR - required variable 'java_extract_dir' missing."
+  when: java_extract_dir is not defined
+- name: Check - Java Install Dir
+  stat: "path=/opt/{{ java_extract_dir }}"
+  register: java_install_dir
+- name: "Download Java"
+  get_url: 
+    url: "{{ java_url }}"
+    dest: "/tmp/{{ java_type }}-{{ java_version }}.tar.gz"
+    validate_certs: "no"
+    headers: "Cookie:oraclelicense=accept-securebackup-cookie"
+  when: not java_install_dir.stat.exists
+- name: "Extract and install Java"
+  unarchive: 
+    src: "/tmp/{{ java_type }}-{{ java_version }}.tar.gz"
+    dest: "/opt/"
+    copy: "no"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+  when: not java_install_dir.stat.exists
+- name: "Java - Create link"
+  file: 
+    src: "/opt/{{ java_extract_dir }}"
+    dest: "/opt/java"
+    owner: "root"
+    group: "root"
+    state: "link"
+- name: "Remove Java files"
+  file: 
+    path: "/opt/java/{{ item }}"
+    state: "absent"
+  with_items:
+    - "COPYRIGHT"
+    - "LICENSE"
+    - "README"
+    - "release"
+    - "THIRDPARTYLICENSEREADME-JAVAFX.txt"
+    - "THIRDPARTYLICENSEREADME.txt"
+    - "Welcome.html"
+- name: "Java - Change bin permissions"
+  file: 
+    path: "/opt/java/bin/"
+    mode: "0755"
+    recurse: "yes"
