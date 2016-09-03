@@ -1,7 +1,2 @@
 ---
 # vars file for oracle-jre8
-java_type: "jre"
-java_version: "8"
-java_minor: "101"
-java_extract_dir: "{{ java_type }}1.{{ java_version }}.0_{{ java_minor }}"
-java_url: "http://download.oracle.com/otn-pub/java/jdk/{{ java_version }}u{{ java_minor }}-b13/{{ java_type }}-{{ java_version }}u{{ java_minor }}-linux-x64.tar.gz"

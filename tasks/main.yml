@@ -1,20 +1,5 @@
 ---
 # tasks file for oracle-jre8
-- name: Check - Java Type
-  fail: msg="ERROR - required variable 'java_type' missing."
-  when: java_type is not defined
-- name: Check - Java Version
-  fail: msg="ERROR - required variable 'java_version' missing."
-  when: java_version is not defined
-- name: Check - Java URL
-  fail: msg="ERROR - required variable 'java_url' missing."
-  when: java_url is not defined
-- name: Check - Java Minor
-  fail: msg="ERROR - required variable 'java_minor' missing."
-  when: java_minor is not defined
-- name: Check - Java Extract Dir
-  fail: msg="ERROR - required variable 'java_extract_dir' missing."
-  when: java_extract_dir is not defined
 - name: Check - Java Install Dir
   stat: "path=/opt/{{ java_extract_dir }}"
   register: java_install_dir
